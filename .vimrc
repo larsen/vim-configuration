@@ -1,5 +1,7 @@
 """ General configuration
 
+set modeline 
+
 set showmatch
 set matchtime=2
 set so=4
@@ -27,7 +29,7 @@ if has("gui_running")
    set lines=59 columns=191
    set number
    set numberwidth=5
-   set transparency=8
+   set transparency=5
    set fuoptions=maxvert,maxhorz
    colorscheme underwater
 endif
@@ -86,7 +88,7 @@ map <Leader>p :set paste<CR>
 map <Leader>P :set nopaste<CR>
 
 " Tlist
-map <Leader>t :TlistToggle<CR>
+" map <Leader>t :TlistToggle<CR>
 
 " NERDTree
 map <Leader>T :NERDTree<CR>
