@@ -16,8 +16,11 @@ set ruler
 
 set smartindent
 set shiftwidth=4 " for autoindent
+set copyindent
 set backspace=indent,eol,start
 set wildmenu
+set wildignore=*.swp,*.bak
+set smartcase
 
 set diffopt=filler,iwhite
 
