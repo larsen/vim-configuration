@@ -56,11 +56,18 @@ endif
 " via osfameron
 " via hlen on #vim !  woot! (slightly modified in the way that made sense to
 " me :-)
-let &statusline='%-2.2n %t %m '                                                  .
-  \ '[%-2.(%{strlen(&filetype)?&filetype:strlen(&syntax)?&syntax:"unknown"}] %)' .
-  \ '%{synIDattr(synID(line("."), col("."), 1), "name")}'                        .
-  \ '%= %{&encoding}  %3.3b 0x%-4B '                                             .
-  \ '%-10.(%l,%c%V%) %<%P'
+" let &statusline='%-2.2n %t %m '                                                  .
+"   \ '[%-2.(%{strlen(&filetype)?&filetype:strlen(&syntax)?&syntax:"unknown"}] %)' .
+"   \ '%{synIDattr(synID(line("."), col("."), 1), "name")}'                        .
+"   \ '%= %{&encoding}  %3.3b 0x%-4B '                                             .
+"   \ '%-10.(%l,%c%V%) %<%P'
+
+call jeetlib#_UI_StatusLine_DefineSpecialHighlights()
+if has("autocmd")
+    au ColorScheme * call jeetlib#_UI_StatusLine_DefineSpecialHighlights()
+endif
+set statusline=%!jeetlib#_UI_StatusLine_Compose()
+
 set laststatus=2
 
 source ~/.vim/plugin/minibufexpl.vim
