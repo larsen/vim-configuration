@@ -1,5 +1,8 @@
 """ General configuration
 
+set hidden
+set nobackup
+set noswapfile
 set modeline 
 
 set showmatch
