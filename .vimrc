@@ -29,15 +29,25 @@ set ts=4
 
 " MacVim settings
 if has("gui_running")
-   set guifont=Droid-Sans-Mono:h13.00 
+   set guifont="Droid Sans Mono:h11.00"
    set guioptions-=T
+   " set guioptions=''
+
+   set guioptions-=t    " Disable Menu tear-offs
+   set guioptions-=T    " Disable the tool-bar
+   set guioptions-=m    " Disable the menu
+   set guioptions-=l
+   set guioptions-=L
+   set guioptions-=r    " Disable the scrollbar
+   set guioptions-=R
+
    set titlestring=%t%(\ %M%)%(\ (%{expand(\"%:~:.:h\")})%)%(\ %a%)
    set lines=59 columns=191
    set number
    set numberwidth=5
    set transparency=5
    set fuoptions=maxvert,maxhorz
-   colorscheme underwater
+   colorscheme mayansmoke
 endif
 
 
