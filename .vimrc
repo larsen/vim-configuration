@@ -84,7 +84,7 @@ map <F7> :! perl -d %<C-M>
 
 map <F8> :! prove %<C-M>
 
-let mapleader = "`"
+let mapleader = ","
 
 " http://www.oreillynet.com/onlamp/blog/2006/08/make_your_vimrc_trivial_to_upd_1.html 
 ",v brings up my .vimrc
