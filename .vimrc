@@ -153,6 +153,7 @@ map <Leader>b :call HandleURI()<CR>
 " Abbreviations
 
 abbrev skall plan 'skip_all' => '';
+abbrev euro €
 
 """ Syntax highlight stuff
 
