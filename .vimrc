@@ -1,35 +1,83 @@
-""" General configuration
+" ------------------------------------------------------------------------ 
+" important
+" ------------------------------------------------------------------------ 
+set nocompatible
 
-set hidden
-set nobackup
-set noswapfile
-set modeline 
 
-set showmatch
-set matchtime=2
-set so=4
-set exrc
-
+" ------------------------------------------------------------------------ 
+" moving around, searching and patterns
+" ------------------------------------------------------------------------ 
 set incsearch
-set hlsearch
-set ruler
-
-set smartindent
-set shiftwidth=4 " for autoindent
-set copyindent
-set backspace=indent,eol,start
-set wildmenu
-set wildignore=*.swp,*.bak
 set smartcase
 
-set diffopt=filler,iwhite
 
-set expandtab
-set ts=4
+" ------------------------------------------------------------------------ 
+" tags
+" ------------------------------------------------------------------------ 
 
+
+" ------------------------------------------------------------------------ 
+" displaying text
+" ------------------------------------------------------------------------ 
+set list listchars=tab:→\ ,trail:·
+colorscheme mac_classic
+set t_Co=256
+set so=4
+
+
+" ------------------------------------------------------------------------ 
+" syntax, highlighting and spelling
+" ------------------------------------------------------------------------ 
+set hlsearch
+syntax on
+hi Folded term=reverse cterm=bold ctermbg=2
+hi LineNr term=bold ctermfg=6
+
+
+" ------------------------------------------------------------------------ 
+" multiple windows
+" ------------------------------------------------------------------------ 
+set hidden
+
+call jeetlib#_UI_StatusLine_DefineSpecialHighlights()
+if has("autocmd")
+    au ColorScheme * call jeetlib#_UI_StatusLine_DefineSpecialHighlights()
+endif
+set statusline=%!jeetlib#_UI_StatusLine_Compose()
+set laststatus=2
+
+" via osfameron
+" via hlen on #vim !  woot! (slightly modified in the way that made sense to
+" me :-)
+" let &statusline='%-2.2n %t %m '                                                  .
+"   \ '[%-2.(%{strlen(&filetype)?&filetype:strlen(&syntax)?&syntax:"unknown"}] %)' .
+"   \ '%{synIDattr(synID(line("."), col("."), 1), "name")}'                        .
+"   \ '%= %{&encoding}  %3.3b 0x%-4B '                                             .
+"   \ '%-10.(%l,%c%V%) %<%P'
+
+
+" ------------------------------------------------------------------------ 
+" multiple tab pages
+" ------------------------------------------------------------------------ 
+
+
+" ------------------------------------------------------------------------ 
+" terminal
+" ------------------------------------------------------------------------ 
+
+
+" ------------------------------------------------------------------------ 
+" using the mouse
+" ------------------------------------------------------------------------ 
+
+
+" ------------------------------------------------------------------------ 
+" GUI
+" ------------------------------------------------------------------------ 
 " MacVim settings
 if has("gui_running")
    set guifont="Droid Sans Mono:h11.00"
+   set fullscreen
    set guioptions-=T
    " set guioptions=''
 
@@ -47,38 +95,68 @@ if has("gui_running")
    set numberwidth=5
    set transparency=5
    set fuoptions=maxvert,maxhorz
-   colorscheme mayansmoke
+   syntax on
+   set background=dark
+   colorscheme solarized
 endif
 
 
-" set number 
+" ------------------------------------------------------------------------ 
+" printing
+" ------------------------------------------------------------------------ 
 
-" via osfameron
-" via hlen on #vim !  woot! (slightly modified in the way that made sense to
-" me :-)
-" let &statusline='%-2.2n %t %m '                                                  .
-"   \ '[%-2.(%{strlen(&filetype)?&filetype:strlen(&syntax)?&syntax:"unknown"}] %)' .
-"   \ '%{synIDattr(synID(line("."), col("."), 1), "name")}'                        .
-"   \ '%= %{&encoding}  %3.3b 0x%-4B '                                             .
-"   \ '%-10.(%l,%c%V%) %<%P'
 
-call jeetlib#_UI_StatusLine_DefineSpecialHighlights()
-if has("autocmd")
-    au ColorScheme * call jeetlib#_UI_StatusLine_DefineSpecialHighlights()
-endif
-set statusline=%!jeetlib#_UI_StatusLine_Compose()
+" ------------------------------------------------------------------------ 
+" messages and info
+" ------------------------------------------------------------------------ 
+set ruler
 
-set laststatus=2
 
-source ~/.vim/plugin/minibufexpl.vim
+" ------------------------------------------------------------------------ 
+" selecting text
+" ------------------------------------------------------------------------ 
 
-""" Mappings and abbreviations
+
+" ------------------------------------------------------------------------ 
+" editing text
+" ------------------------------------------------------------------------ 
+set showmatch
+set matchtime=2
+set backspace=indent,eol,start
+
+
+" ------------------------------------------------------------------------ 
+" tabs and indenting
+" ------------------------------------------------------------------------ 
+set smartindent
+set shiftwidth=4 " for autoindent
+set copyindent
+set expandtab
+set ts=4
+
+
+" ------------------------------------------------------------------------ 
+" folding
+" ------------------------------------------------------------------------ 
+set foldmethod=manual
+" let perl_fold = 1
+
+
+" ------------------------------------------------------------------------ 
+" diff mode
+" ------------------------------------------------------------------------ 
+set diffopt=filler,iwhite
+
+
+" ------------------------------------------------------------------------ 
+" mapping
+" ------------------------------------------------------------------------ 
+let mapleader = ","
 
 :map  <C-tab> :tabnext<cr>
 :imap <C-tab> <ESC>:tabnext<cr>i
 :nmap <C-t>   :tabnew<cr>
 
-set foldmethod=manual
 map + v%zf
 
 " via http://pdx.pm.org/kwiki/index.cgi?VimRCFile (JoshHeumann)
@@ -91,9 +169,6 @@ map <F7> :! perl -d %<C-M>
 
 map <F8> :! prove %<C-M>
 
-let mapleader = ","
-
-" http://www.oreillynet.com/onlamp/blog/2006/08/make_your_vimrc_trivial_to_upd_1.html 
 ",v brings up my .vimrc
 ",V reloads it -- making all changes active (have to save first)
 map <Leader>v :sp $VIMRC<CR><C-W>_
@@ -121,6 +196,11 @@ nmap n nzz
 nmap N Nzz
 nmap * *zz
 
+silent! nmap <unique> <silent> <Leader>t :CommandT<CR>
+
+" JS lint
+nmap <F4> :w<CR>:make<CR>:cw<CR>
+
 function! CleverTab()
     if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
         return "\<Tab>"
@@ -130,13 +210,11 @@ endfunction
 
 inoremap <Tab> <C-R>=CleverTab()<CR>
 
-
 function! UrlTransform()
     exec "r !~/bin/uritransform.pl \"" . getline(".") . "\""   
 endfunction
 
 map <Leader>u :call UrlTransform()<CR>
-
 
 function! HandleURI()
   let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;:]*')
@@ -150,19 +228,63 @@ endfunction
 map <Leader>b :call HandleURI()<CR>
 
 
-" Abbreviations
+" ------------------------------------------------------------------------ 
+" reading and writing files
+" ------------------------------------------------------------------------ 
+set nobackup
+set modeline 
 
+
+" ------------------------------------------------------------------------ 
+" the swap file
+" ------------------------------------------------------------------------ 
+set noswapfile
+
+
+" ------------------------------------------------------------------------ 
+" command line editing
+" ------------------------------------------------------------------------ 
+set wildmenu
+set wildignore=*.swp,*.bak
+
+
+" ------------------------------------------------------------------------ 
+" executing external commands
+" ------------------------------------------------------------------------ 
+
+
+" ------------------------------------------------------------------------ 
+" running make and jumping to errors
+" ------------------------------------------------------------------------ 
+
+
+" ------------------------------------------------------------------------ 
+" language specific
+" ------------------------------------------------------------------------ 
+
+
+" ------------------------------------------------------------------------ 
+" multi-byte characters
+" ------------------------------------------------------------------------ 
+set encoding=utf-8 " Necessary to show Unicode glyphs
+
+
+" ------------------------------------------------------------------------ 
+" various
+" ------------------------------------------------------------------------ 
+set exrc
 abbrev skall plan 'skip_all' => '';
-abbrev euro €
-
-""" Syntax highlight stuff
-
-syntax on
-hi Folded term=reverse cterm=bold ctermbg=2
-hi LineNr term=bold ctermfg=6
+" abbrev euro €
 
 
-""" Auto-actions
+" ------------------------------------------------------------------------ 
+" moving around, searching and patterns
+" ------------------------------------------------------------------------ 
+
+
+" ------------------------------------------------------------------------ 
+" autoactions
+" ------------------------------------------------------------------------ 
 
 " au BufWinLeave * mkview
 " au BufWinEnter * silent loadview
@@ -177,23 +299,6 @@ au BufReadPost *
   \   exe "normal g`\"" |
   \ endif
 
-
-" Convenient command to see the difference between the current buffer and the
-" file it was loaded from, thus the changes you made.
-" Only define it when not defined already.
-if !exists(":DiffOrig")
-  command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
-          \ | wincmd p | diffthis
-endif
-
-
-""" Perl-related stuff
-
-au FileType pl,pm,t set filetype=perl
-
-" let perl_fold = 1
-set ts=4
-
 if has("autocmd")
 
     augroup perl
@@ -203,7 +308,48 @@ if has("autocmd")
 
 endif
 
+au FileType pl,pm,t set filetype=perl
 
-""" Useful tips
+if exists("did\_load\_filetypes")
+ finish
+endif
 
-" match errorMsg /\%>73v.\+/
+augroup markdown
+    au! BufRead,BufNewFile *.mkd   setfiletype mkd
+augroup END
+
+augroup markdown
+    au! BufRead,BufNewFile *.tt   set ft=html
+augroup END
+
+augroup mkd
+    autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:&gt;
+augroup END
+
+" From http://www.reddit.com/r/vim/comments/m2k76/vim_porn_that_is_show_me_your_vim/
+" Always show line numbers, but only in current window.
+set number
+:au WinEnter * :setlocal number
+:au WinLeave * :setlocal nonumber
+
+" Automatically resize vertical splits.
+:au WinEnter * :set winfixheight
+:au WinEnter * :wincmd =
+
+" Convenient command to see the difference between the current buffer and the
+" file it was loaded from, thus the changes you made.
+" Only define it when not defined already.
+if !exists(":DiffOrig")
+  command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
+          \ | wincmd p | diffthis
+endif
+
+source organizer.rc
+
+let g:Powerline_theme="skwp"
+
+let g:Powerline_colorscheme="skwp"
+
+let g:Powerline_symbols = 'fancy'
+
+call pathogen#infect()
