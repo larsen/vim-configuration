@@ -22,7 +22,7 @@ set smartcase
 set list listchars=tab:→\ ,trail:·
 colorscheme mac_classic
 set t_Co=256
-set so=4
+set scrolloff=4
 
 
 " ------------------------------------------------------------------------ 
