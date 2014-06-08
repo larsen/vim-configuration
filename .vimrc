@@ -132,7 +132,7 @@ set smartindent
 set shiftwidth=4 " for autoindent
 set copyindent
 set expandtab
-set ts=4
+set ts=2
 
 
 " ------------------------------------------------------------------------ 
@@ -153,9 +153,19 @@ set diffopt=filler,iwhite
 " ------------------------------------------------------------------------ 
 let mapleader = ","
 
+nnoremap <silent> <F12> :bn<CR>
+nnoremap <silent> <S-F12> :bp<CR>
+
 :map  <C-tab> :tabnext<cr>
 :imap <C-tab> <ESC>:tabnext<cr>i
 :nmap <C-t>   :tabnew<cr>
+
+" Use ctrl-[hjkl] to select the active split!
+" http://stackoverflow.com/questions/6053301/easier-way-to-navigate-between-vim-split-panes
+nmap <silent> <c-k> :wincmd k<CR>
+nmap <silent> <c-j> :wincmd j<CR>
+nmap <silent> <c-h> :wincmd h<CR>
+nmap <silent> <c-l> :wincmd l<CR>
 
 map + v%zf
 
@@ -178,6 +188,8 @@ map <silent> <Leader>V :source $VIMRC<CR>:filetype detect<CR>:exe ":echo 'vimrc 
 nmap <silent> <leader><leader> [{V%zf
 
 " line numbers
+set number
+set relativenumber
 map <Leader>n :set number<CR>
 map <Leader>N :set nonumber<CR>
 
@@ -285,6 +297,8 @@ abbrev skall plan 'skip_all' => '';
 " ------------------------------------------------------------------------ 
 " autoactions
 " ------------------------------------------------------------------------ 
+
+autocmd vimenter * if !argc() | NERDTree | endif
 
 " au BufWinLeave * mkview
 " au BufWinEnter * silent loadview
